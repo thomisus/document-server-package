@@ -13,3 +13,4 @@ override_dh_strip:
 
 execute_after_dh_fixperms:
 	chmod o-rwx debian/*-documentserver/etc/*/documentserver/*.json
+	chmod o-rwx debian/M4_PACKAGE_NAME/etc/M4_DS_PREFIX/*.json
