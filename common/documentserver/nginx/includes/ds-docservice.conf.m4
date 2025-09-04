@@ -6,20 +6,21 @@ rewrite ^(?<cache>\/web-apps\/apps\/(?!api\/documents\/api\.js$).*)$ $the_scheme
 
 #disable caching for api.js
 location ~ ^(\/[\d]+\.[\d]+\.[\d]+[\.|-][\w]+)?\/(web-apps\/apps\/api\/documents\/api\.js)$ {
-  expires -1;
+  expires off;
+  add_header Cache-Control "no-store, no-cache, must-revalidate";
   # gzip_static on;
   alias  M4_DS_ROOT/$2;
 }
 
 location ~ ^(\/[\d]+\.[\d]+\.[\d]+[\.|-][\w]+)?\/(document_editor_service_worker.js)$ {
-  expires 365d;
+  add_header Cache-Control "public, max-age=31536000, immutable" always;
   # gzip_static on;
   alias  M4_DS_ROOT/sdkjs/common/serviceworker/$2;
 }
 
 #suppress logging the unsupported locale error in web-apps
 location ~ ^(\/[\d]+\.[\d]+\.[\d]+[\.|-][\w]+)?\/(web-apps)(\/.*\.json)$ {
-  expires 365d;
+  add_header Cache-Control "public, max-age=31536000, immutable" always;
   error_log M4_DEV_NULL crit;
   # gzip_static on;
   alias M4_DS_ROOT/$2$3;
@@ -27,14 +28,14 @@ location ~ ^(\/[\d]+\.[\d]+\.[\d]+[\.|-][\w]+)?\/(web-apps)(\/.*\.json)$ {
 
 #suppress logging the unsupported locale error in plugins
 location ~ ^(\/[\d]+\.[\d]+\.[\d]+[\.|-][\w]+)?\/(sdkjs-plugins)(\/.*\.json)$ {
-  expires 365d;
+  add_header Cache-Control "public, max-age=31536000, immutable" always;
   error_log M4_DEV_NULL crit;
   # gzip_static on;
   alias M4_DS_ROOT/$2$3;
 }
 
 location ~ ^(\/[\d]+\.[\d]+\.[\d]+[\.|-][\w]+)?\/(web-apps|sdkjs|sdkjs-plugins|fonts|dictionaries)(\/.*)$ {
-  expires 365d;
+  add_header Cache-Control "public, max-age=31536000, immutable" always;
   # gzip_static on;
   alias M4_DS_ROOT/$2$3;
 }
