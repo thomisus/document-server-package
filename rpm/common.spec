@@ -285,6 +285,14 @@ if [ "$IS_UPGRADE" = "true" ]; then
         echo "OK"
 
         echo -n "Updating PostgreSQL database... "
+        DB_SCHEMA=${DB_SCHEMA:-$($JSON services.CoAuthoring.sql.pgPoolExtraOptions.options 2>/dev/null | sed -n 's/.*search_path=\([^, ]*\).*/\1/p')}
+
+        if [ -n "${DB_SCHEMA}" ]; then
+          export PGOPTIONS="-c search_path=${DB_SCHEMA}"
+          $PSQL -c "CREATE SCHEMA IF NOT EXISTS ${DB_SCHEMA};" >/dev/null 2>&1
+          ${JSON} "services.CoAuthoring.sql.pgPoolExtraOptions.options = '${PGOPTIONS}'"
+        fi
+
         $PSQL -d "$DB_NAME" -f "$DIR/server/schema/postgresql/removetbl.sql" >/dev/null 2>&1
         $PSQL -d "$DB_NAME" -f "$DIR/server/schema/postgresql/createdb.sql" >/dev/null 2>&1
         echo "OK"

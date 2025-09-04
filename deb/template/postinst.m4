@@ -150,6 +150,15 @@ install_postges() {
 				{ echo "ERROR: can't connect to postgressql database"; exit 1; }
 		fi
 	set -e
+
+		DB_SCHEMA=${DB_SCHEMA:-$($JSON_BIN -q -f $LOCAL_CONFIG services.CoAuthoring.sql.pgPoolExtraOptions.options 2>/dev/null | sed -n 's/.*search_path=\([^, ]*\).*/\1/p')}
+
+		if [ -n "${DB_SCHEMA}" ]; then
+			export PGOPTIONS="-c search_path=${DB_SCHEMA}"
+			$PSQL -c "CREATE SCHEMA IF NOT EXISTS ${DB_SCHEMA};" >/dev/null 2>&1
+			$JSON -e "this.services.CoAuthoring.sql.pgPoolExtraOptions.options = '${PGOPTIONS}'"
+		fi
+
 		if [ ! $CLUSTER_MODE = true ]; then
 			$PSQL -f "$DIR/server/schema/postgresql/removetbl.sql" \
 				>/dev/null 2>&1
