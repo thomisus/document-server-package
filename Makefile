@@ -220,6 +220,7 @@ DEB_DEPS += deb/build/debian/$(PACKAGE_NAME).dirs
 
 COMMON_DEPS += common/documentserver/nginx/includes/ds-common.conf
 COMMON_DEPS += common/documentserver/nginx/includes/ds-docservice.conf
+COMMON_DEPS += common/documentserver/nginx/includes/ds-adminpanel.conf
 COMMON_DEPS += common/documentserver/nginx/includes/ds-letsencrypt.conf
 COMMON_DEPS += common/documentserver/nginx/includes/http-common.conf
 COMMON_DEPS += common/documentserver/nginx/ds-ssl.conf.tmpl
