@@ -1,5 +1,6 @@
-upstream docservice {  
-  server localhost:8000 max_fails=0 fail_timeout=0s;
+upstream docservice {
+  server localhost:8000;
+  keepalive 64;
 }
 
 upstream adminpanel {  
