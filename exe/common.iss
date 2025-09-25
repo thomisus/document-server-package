@@ -68,6 +68,13 @@
 
 #define LOCAL_SERVICE 'NT Authority\LocalService'
 
+#define ADMINPANEL_SRV        'DsAdminPanelSvc'
+#define ADMINPANEL_SRV_DISPLAY  str(sAppName + " AdminPanel")
+#define ADMINPANEL_SRV_DESCR  str(sAppName + " AdminPanel Service")
+#define ADMINPANEL_SRV_DIR    '{app}\server\AdminPanel'
+#define ADMINPANEL_SRV_LOG_DIR    '{app}\Log\adminpanel'
+#define ADMINPANEL_SRV_FILE '{app}\winsw\AdminPanel.xml'
+
 #define CONVERTER_SRV        'DsConverterSvc'
 #define CONVERTER_SRV_DISPLAY  str(sAppName + " Converter")
 #define CONVERTER_SRV_DESCR  str(sAppName + " Converter Service")
@@ -310,6 +317,7 @@ Source: ..\common\documentserver\nginx\*.tmpl;  DestDir: {#NGINX_SRV_DIR}\conf; 
 Source: ..\common\documentserver\nginx\ds.conf; DestDir: {#NGINX_SRV_DIR}\conf; Flags: onlyifdoesntexist uninsneveruninstall; Components: Program
 Source: scripts\connectionRabbit.py;            DestDir: "{app}"; Flags: ignoreversion; Components: Program
 Source: winsw\WinSW-x64.exe;                    DestDir: "{app}\winsw"; Flags: ignoreversion; Components: Program
+Source: {#file "winsw\AdminPanel.xml"};         DestDir: "{app}\winsw"; Flags: ignoreversion; DestName: "AdminPanel.xml"
 Source: {#file "winsw\Converter.xml"};          DestDir: "{app}\winsw"; Flags: ignoreversion; DestName: "Converter.xml"
 Source: {#file "winsw\DocService.xml"};         DestDir: "{app}\winsw"; Flags: ignoreversion; DestName: "DocService.xml"
 Source: {#file "winsw\Proxy.xml"};              DestDir: "{app}\winsw"; Flags: ignoreversion; DestName: "Proxy.xml"
@@ -320,6 +328,7 @@ Name: "{app}\server\App_Data\cache\files"; Permissions: service-modify
 Name: "{app}\server\App_Data\docbuilder"; Permissions: service-modify
 Name: "{app}\sdkjs";                  Permissions: users-modify
 Name: "{app}\fonts";                  Permissions: users-modify
+Name: "{#ADMINPANEL_SRV_LOG_DIR}";    Permissions: service-modify
 Name: "{#CONVERTER_SRV_LOG_DIR}";     Permissions: service-modify
 Name: "{#DOCSERVICE_SRV_LOG_DIR}";    Permissions: service-modify
 Name: "{#NGINX_SRV_DIR}";             Permissions: service-modify
@@ -434,6 +443,9 @@ Filename: "{#PSQL}"; Parameters: "-U {#DbAdminUserName} -w -q -c ""GRANT ALL PRI
 Filename: "{#PSQL}"; Parameters: "-h {code:GetDbHost} -U {code:GetDbUser} -d {code:GetDbName} -p {code:GetDbPort} -w -q -f ""{app}\server\schema\postgresql\removetbl.sql"""; Flags: runhidden; Check: IsNotClusterMode; StatusMsg: "{cm:RemoveDb}"
 Filename: "{#PSQL}"; Parameters: "-h {code:GetDbHost} -U {code:GetDbUser} -d {code:GetDbName} -p {code:GetDbPort} -w -q -f ""{app}\server\schema\postgresql\createdb.sql"""; Flags: runhidden; Check: CreateDbAuth; StatusMsg: "{cm:CreateDb}"
 
+Filename: "{#WINSW}";   Parameters: "install ""{#ADMINPANEL_SRV_FILE}"""; Flags: runhidden; StatusMsg: "{cm:InstallSrv,{#ADMINPANEL_SRV}}"
+Filename: "{#WINSW}";   Parameters: "start ""{#ADMINPANEL_SRV_FILE}"""; Flags: runhidden; StatusMsg: "{cm:StartSrv,{#ADMINPANEL_SRV}}"
+
 Filename: "{#WINSW}";   Parameters: "install ""{#CONVERTER_SRV_FILE}"""; Flags: runhidden; StatusMsg: "{cm:InstallSrv,{#CONVERTER_SRV}}"
 Filename: "{#WINSW}";   Parameters: "start ""{#CONVERTER_SRV_FILE}"""; Flags: runhidden; StatusMsg: "{cm:StartSrv,{#CONVERTER_SRV}}"
 
@@ -453,6 +465,9 @@ Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall add rule name=""{
 
 [UninstallRun]
 Filename: "{app}\bin\documentserver-prepare4shutdown.bat"; Flags: runhidden
+
+Filename: "{#WINSW}"; Parameters: "stop ""{#ADMINPANEL_SRV_FILE}"""; Flags: runhidden
+Filename: "{#WINSW}"; Parameters: "uninstall ""{#ADMINPANEL_SRV_FILE}"""; Flags: runhidden
 
 Filename: "{#WINSW}"; Parameters: "stop ""{#PROXY_SRV_FILE}"""; Flags: runhidden
 Filename: "{#WINSW}"; Parameters: "uninstall ""{#PROXY_SRV_FILE}"""; Flags: runhidden
