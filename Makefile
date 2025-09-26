@@ -50,7 +50,7 @@ EXE = $(EXE_BUILD_DIR)/$(COMPANY_NAME)-$(PRODUCT_NAME)-$(PRODUCT_VERSION).$(BUIL
 EXE_PR = $(EXE_BUILD_DIR)/$(COMPANY_NAME)-$(PRODUCT_NAME)-Prerequisites-$(PRODUCT_VERSION).$(BUILD_NUMBER)-x64.exe
 TAR = $(TAR_PACKAGE_DIR)/$(PACKAGE_NAME)-$(PACKAGE_VERSION)$(TAR_RELEASE_SUFFIX)-$(TAR_ARCH).tar.gz
 
-PACKAGE_SERVICES ?= ds-docservice ds-converter ds-metrics
+PACKAGE_SERVICES ?= ds-docservice ds-converter ds-metrics ds-adminpanel
 
 DOCUMENTSERVER = common/documentserver/home
 DOCUMENTSERVER_BIN = common/documentserver/bin
@@ -237,6 +237,7 @@ LINUX_DEPS_CLEAN += common/documentserver/logrotate/*.conf
 LINUX_DEPS += common/documentserver/systemd/ds-converter.service
 LINUX_DEPS += common/documentserver/systemd/ds-docservice.service
 LINUX_DEPS += common/documentserver/systemd/ds-metrics.service
+LINUX_DEPS += common/documentserver/systemd/ds-adminpanel.service
 LINUX_DEPS += common/documentserver-example/systemd/ds-example.service
 
 LINUX_DEPS_CLEAN += common/documentserver/systemd/*.service

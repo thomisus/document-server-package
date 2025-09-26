@@ -56,6 +56,7 @@ cp -r $DOCUMENTSERVER_CONFIG/* "$CONF_DIR/"
 mkdir -p "$LOG_DIR/docservice"
 mkdir -p "$LOG_DIR/converter"
 mkdir -p "$LOG_DIR/metrics"
+mkdir -p "$LOG_DIR/adminpanel"
 
 #make cache dir
 mkdir -p "$DATA_DIR/App_Data/cache/files"
@@ -157,6 +158,7 @@ rm -rf "%{buildroot}"
 %attr(550, ds, ds) %{_localstatedir}/www/%{_ds_prefix}/server/FileConverter/bin/docbuilder
 %attr(550, ds, ds) %{_localstatedir}/www/%{_ds_prefix}/server/FileConverter/bin/x2t
 %attr(550, ds, ds) %{_localstatedir}/www/%{_ds_prefix}/server/Metrics/metrics
+%attr(550, ds, ds) %{_localstatedir}/www/%{_ds_prefix}/server/AdminPanel/server/adminpanel
 %attr(550, ds, ds) %{_localstatedir}/www/%{_ds_prefix}/server/tools/*
 %if %{defined example}
 %attr(550, ds, ds) %{_localstatedir}/www/%{_ds_prefix}-example/example
@@ -261,6 +263,11 @@ if [ "$IS_UPGRADE" = "true" ]; then
   if [ $JWT_ENABLED = "false" ]; then
     JWT_MESSAGE="You have JWT disabled. We recommend enabling JWT in ${LOCAL_CONFIG} in services.CoAuthoring.token.enable and configure your custom JWT key in services.CoAuthoring.secret"
   fi
+
+  # v9.1.0 - Adding the missing secret.browser.string field
+  JWT_SECRET=$($JSON services.CoAuthoring.secret.inbox.string)
+  ${JSON} -I -q -e "if(this.services.CoAuthoring.secret.browser===undefined)this.services.CoAuthoring.secret.browser={};"
+  ${JSON} -I -q -e "if(this.services.CoAuthoring.secret.browser.string===undefined)this.services.CoAuthoring.secret.browser.string = '${JWT_SECRET}'"
 
   if [ -f ${LOCAL_CONFIG} ] && [[ -n "$($JSON services.CoAuthoring.sql)" ]]; then
     #load_db_params

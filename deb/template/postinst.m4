@@ -231,6 +231,9 @@ save_jwt_params(){
   
   ${JSON} -e "if(this.services.CoAuthoring.secret===undefined)this.services.CoAuthoring.secret={};"
 
+  ${JSON} -e "if(this.services.CoAuthoring.secret.browser===undefined)this.services.CoAuthoring.secret.browser={};"
+  ${JSON} -e "if(this.services.CoAuthoring.secret.browser.string===undefined)this.services.CoAuthoring.secret.browser.string = '${JWT_SECRET}'"
+
   ${JSON} -e "if(this.services.CoAuthoring.secret.inbox===undefined)this.services.CoAuthoring.secret.inbox={};"
   ${JSON} -e "if(this.services.CoAuthoring.secret.inbox.string===undefined)this.services.CoAuthoring.secret.inbox.string = '${JWT_SECRET}'"
 
