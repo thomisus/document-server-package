@@ -265,9 +265,12 @@ if [ "$IS_UPGRADE" = "true" ]; then
   fi
 
   # v9.1.0 - Adding the missing secret.browser.string field
-  JWT_SECRET=$($JSON services.CoAuthoring.secret.inbox.string)
-  ${JSON} -I -q -e "if(this.services.CoAuthoring.secret.browser===undefined)this.services.CoAuthoring.secret.browser={};"
-  ${JSON} -I -q -e "if(this.services.CoAuthoring.secret.browser.string===undefined)this.services.CoAuthoring.secret.browser.string = '${JWT_SECRET}'"
+  if [ -f ${LOCAL_CONFIG} ] && [[ -n "$($JSON services.CoAuthoring.secret.inbox.string)" ]] && [[ -z "$($JSON services.CoAuthoring.secret.browser.string)" ]]; then
+    JWT_SECRET=$($JSON services.CoAuthoring.secret.inbox.string)
+    ${JSON} -I -q -e "if(this.services.CoAuthoring.secret.browser===undefined)this.services.CoAuthoring.secret.browser={};"
+    ${JSON} -I -q -e "if(this.services.CoAuthoring.secret.browser.string===undefined)this.services.CoAuthoring.secret.browser.string = '${JWT_SECRET}'"
+    chown ds:ds "${LOCAL_CONFIG}"
+  fi
 
   if [ -f ${LOCAL_CONFIG} ] && [[ -n "$($JSON services.CoAuthoring.sql)" ]]; then
     #load_db_params
