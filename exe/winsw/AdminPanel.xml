@@ -3,8 +3,7 @@
 	<name>{#ADMINPANEL_SRV_DISPLAY}</name>
 	<description>{#ADMINPANEL_SRV_DESCR}</description>
 	<priority>RealTime</priority>
-	<startmode>Automatic</startmode>
-	<delayedAutoStart>true</delayedAutoStart>
+	<startmode>Manual</startmode>
 	<serviceaccount><username>NT AUTHORITY\LocalService</username></serviceaccount>
 	<onfailure action="restart" delay="1 sec"/>
 	<logpath>%BASE%\..\Log\adminpanel</logpath>
