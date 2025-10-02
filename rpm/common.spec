@@ -269,7 +269,6 @@ if [ "$IS_UPGRADE" = "true" ]; then
     JWT_SECRET=$($JSON services.CoAuthoring.secret.inbox.string)
     ${JSON} -I -q -e "if(this.services.CoAuthoring.secret.browser===undefined)this.services.CoAuthoring.secret.browser={};"
     ${JSON} -I -q -e "if(this.services.CoAuthoring.secret.browser.string===undefined)this.services.CoAuthoring.secret.browser.string = '${JWT_SECRET}'"
-    chown ds:ds "${LOCAL_CONFIG}"
   fi
 
   if [ -f ${LOCAL_CONFIG} ] && [[ -n "$($JSON services.CoAuthoring.sql)" ]]; then
@@ -333,6 +332,7 @@ if [ "$IS_UPGRADE" = "true" ]; then
     echo "You should reconfigure the package using script \"/usr/bin/documentserver-configure.sh\""
     echo ""
   fi
+  chown ds:ds "${LOCAL_CONFIG}"
 fi
 
 # generate allfonts.js, thumbnail and cache_tag
