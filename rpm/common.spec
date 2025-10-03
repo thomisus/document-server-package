@@ -388,7 +388,11 @@ for SVC in %{package_services}; do
   fi
 done
 
-systemctl is-active --quiet ds-example && systemctl restart ds-example
+for SVC in ds-example ds-adminpanel; do
+  if [ -e /usr/lib/systemd/system/$SVC.service ]; then
+    systemctl is-active --quiet "$SVC" && systemctl restart "$SVC"
+  fi
+done
 
 if systemctl is-active --quiet nginx; then
   systemctl reload nginx >/dev/null 2>&1
