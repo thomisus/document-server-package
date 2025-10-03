@@ -445,7 +445,6 @@ Filename: "{#PSQL}"; Parameters: "-h {code:GetDbHost} -U {code:GetDbUser} -d {co
 Filename: "{#PSQL}"; Parameters: "-h {code:GetDbHost} -U {code:GetDbUser} -d {code:GetDbName} -p {code:GetDbPort} -w -q -f ""{app}\server\schema\postgresql\createdb.sql"""; Flags: runhidden; Check: CreateDbAuth; StatusMsg: "{cm:CreateDb}"
 
 Filename: "{#WINSW}";   Parameters: "install ""{#ADMINPANEL_SRV_FILE}"""; Flags: runhidden; StatusMsg: "{cm:InstallSrv,{#ADMINPANEL_SRV}}"
-Filename: "{#WINSW}";   Parameters: "start ""{#ADMINPANEL_SRV_FILE}"""; Flags: runhidden; StatusMsg: "{cm:StartSrv,{#ADMINPANEL_SRV}}"
 
 Filename: "{#WINSW}";   Parameters: "install ""{#CONVERTER_SRV_FILE}"""; Flags: runhidden; StatusMsg: "{cm:InstallSrv,{#CONVERTER_SRV}}"
 Filename: "{#WINSW}";   Parameters: "start ""{#CONVERTER_SRV_FILE}"""; Flags: runhidden; StatusMsg: "{cm:StartSrv,{#CONVERTER_SRV}}"
