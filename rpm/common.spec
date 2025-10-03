@@ -298,7 +298,7 @@ if [ "$IS_UPGRADE" = "true" ]; then
         if [ -n "${DB_SCHEMA}" ]; then
           export PGOPTIONS="-c search_path=${DB_SCHEMA}"
           $PSQL -c "CREATE SCHEMA IF NOT EXISTS ${DB_SCHEMA};" >/dev/null 2>&1
-          ${JSON} "services.CoAuthoring.sql.pgPoolExtraOptions.options = '${PGOPTIONS}'"
+          ${JSON} "this.services.CoAuthoring.sql.pgPoolExtraOptions ||= {}; this.services.CoAuthoring.sql.pgPoolExtraOptions.options = '${PGOPTIONS}'"
         fi
 
         $PSQL -d "$DB_NAME" -f "$DIR/server/schema/postgresql/removetbl.sql" >/dev/null 2>&1
