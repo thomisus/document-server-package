@@ -250,6 +250,10 @@ save_db_params(){
 	$JSON -e "this.services.CoAuthoring.sql.dbPass = '$DB_PWD'"
 	$JSON -e "this.services.CoAuthoring.sql.type = '$DB_TYPE'"
 	$JSON -e "this.services.CoAuthoring.sql.dbPort = '$DB_PORT'"
+	if [ -n "${DB_SCHEMA}" ]; then
+		$JSON -e "if(this.services.CoAuthoring.sql.pgPoolExtraOptions===undefined)this.services.CoAuthoring.sql.pgPoolExtraOptions={};"
+		$JSON -e "this.services.CoAuthoring.sql.pgPoolExtraOptions.options = '-c search_path=${DB_SCHEMA}'"
+	fi
 }
 
 save_rabbitmq_params(){
@@ -393,7 +397,6 @@ execute_postgres_scripts(){
 	if [ -n "${DB_SCHEMA}" ]; then
 		export PGOPTIONS="-c search_path=${DB_SCHEMA}"
 		$PSQL -c "CREATE SCHEMA IF NOT EXISTS ${DB_SCHEMA};" >/dev/null 2>&1
-		$JSON -e "this.services.CoAuthoring.sql.pgPoolExtraOptions ||= {}; this.services.CoAuthoring.sql.pgPoolExtraOptions.options = '${PGOPTIONS}'"
 	fi
 
         if [ ! "$CLUSTER_MODE" = true ]; then
