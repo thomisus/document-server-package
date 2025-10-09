@@ -80,7 +80,7 @@ location / {
   proxy_http_version 1.1;
   proxy_read_timeout 300s;
   proxy_send_timeout 300s;
-  proxy_connect_timeout 60s;
+  proxy_connect_timeout 300s;
   proxy_buffering on;
   proxy_buffers 64 32k;
   proxy_busy_buffers_size 64k;
