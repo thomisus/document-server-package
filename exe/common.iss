@@ -804,15 +804,6 @@ begin
   Result := IsDefaultDatabase;
 end;
 
-function SetJWTRandomString(Param: String): String;
-begin
-  if JWTSecret = '' then
-  begin;
-    JWTSecret := RandomString(30);
-  end;
-  Result := JWTSecret;
-end;
-
 function IsLocalJsonExists(): Boolean;
 begin
   Result := LocalJsonExists;
@@ -869,6 +860,30 @@ begin
   finally
     SL.Free;
   end;
+end;
+
+function GetJWTFromFileOrGenerate(Param: String): String;
+var
+  TempFileName, Command, Output: string;
+  ResultCode: Integer;
+begin
+  TempFileName := ExpandConstant('{tmp}\output.txt');
+  if IsLocalJsonExists() then
+  begin
+    Command := '"' + ExpandConstant('{#JSON}') + '" -q -f "' + ExpandConstant('{app}\config\local.json') + '" -a "services.CoAuthoring.secret.inbox.string" > "' + TempFileName + '"';
+    Exec('cmd.exe', '/C "' + Command + '"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+    if FileExists(TempFileName) then
+    begin
+      Output := LoadStringFromFile(TempFileName);
+      JWTSecret := Trim(Output);
+      DeleteFile(TempFileName);
+    end;
+  end
+  else
+  begin
+    JWTSecret := RandomString(30);
+  end;
+  Result := JWTSecret;
 end;
 
 function GenerateRSAKey(): Boolean;
@@ -979,7 +994,7 @@ end;
 
 function GetJwtSecret(Param: String): String;
 begin
-  Result := ExpandConstant('{param:JWT_SECRET|{reg:HKLM\{#sAppRegPath},{#REG_JWT_SECRET}|{code:SetJWTRandomString}}}');
+  Result := ExpandConstant('{param:JWT_SECRET|{reg:HKLM\{#sAppRegPath},{#REG_JWT_SECRET}|{code:GetJWTFromFileOrGenerate}}}');
 end;
 
 function GetJwtHeader(Param: String): String;
