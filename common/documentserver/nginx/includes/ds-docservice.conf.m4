@@ -3,7 +3,7 @@ location = / { return 308 $the_scheme://$the_host$the_prefix/welcome/; }
 
 #script caching protection
 location ~ ^(?<cache>\/web-apps\/apps\/(?!api\/documents\/api\.js$).*)$ {
-  return 308 $the_scheme://$the_host$the_prefix/M4_PRODUCT_VERSION-$cache_tag$cache;
+  return 308 $the_scheme://$the_host$the_prefix/M4_PRODUCT_VERSION-$cache_tag$cache$is_args$args;
 }
 
 #disable caching for api.js
