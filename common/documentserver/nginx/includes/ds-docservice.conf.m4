@@ -88,6 +88,15 @@ location / {
   proxy_redirect off;
 }
 
+location ~* ^(\/[\d]+\.[\d]+\.[\d]+[\.|-][\w]+)?\/(ai-proxy)(\/.*)?$ {
+  proxy_pass http://docservice/$2$3;
+
+  proxy_connect_timeout 300s;
+  proxy_send_timeout    300s;
+  proxy_read_timeout    300s;
+  send_timeout          300s;
+}
+
 location ~ ^/([\d]+\.[\d]+\.[\d]+[\.|-][\w]+)/(?<path>.*)$ {
   proxy_pass http://docservice/$path$is_args$args;
   proxy_http_version 1.1;
