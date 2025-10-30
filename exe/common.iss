@@ -628,11 +628,12 @@ function ExtractFiles(): Boolean;
 begin
   ExtractTemporaryFile('connectionRabbit.py');
   ExtractTemporaryFile('psql.exe');
-  ExtractTemporaryFile('libintl-8.dll');
+  ExtractTemporaryFile('libintl-9.dll');
   ExtractTemporaryFile('libpq.dll');
-  ExtractTemporaryFile('libcrypto-1_1-x64.dll');
-  ExtractTemporaryFile('libssl-1_1-x64.dll');
+  ExtractTemporaryFile('libcrypto-3-x64.dll');
+  ExtractTemporaryFile('libssl-3-x64.dll');
   ExtractTemporaryFile('libiconv-2.dll');
+  ExtractTemporaryFile('libwinpthread-1.dll');
   Result := true;
 end;
 
