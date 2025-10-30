@@ -504,7 +504,7 @@ Name: "Prerequisites\OpenSSL"; Description: "OpenSSL"; Flags: fixed; Types: full
 Name: "Prerequisites\Python"; Description: "Python 3.11.3 "; Flags: checkablealone; Types: full; Check: not IsPythonInstalled;
 Name: "Prerequisites\PostgreSQL"; Description: "PostgreSQL 18.0"; Flags: checkablealone; Types: full; Check: not IsPostgreSQLInstalled;
 Name: "Prerequisites\RabbitMq"; Description: "RabbitMQ 3.12.11"; Flags: checkablealone; Types: full; Check: not IsRabbitMQInstalled;
-Name: "Prerequisites\Redis"; Description: "Redis 5.0.10"; Flags: checkablealone; Types: full; Check: IsCommercial and not IsRedisInstalled and not UseLocalStorage;
+Name: "Prerequisites\Redis"; Description: "Redis 7.4.0"; Flags: checkablealone; Types: full; Check: IsCommercial and not IsRedisInstalled and not UseLocalStorage;
 
 [Code]
 var

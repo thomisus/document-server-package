@@ -54,7 +54,7 @@ function IsRedisInstalled(): Boolean;
 var
   Version: String;
 begin
-  Version := '5';
+  Version := '7';
   Result := IsMsiProductInstalled(
            Dependency_String(
             '',
@@ -212,10 +212,10 @@ procedure Dependency_AddBundledRedis;
 var
   Version: String;
 begin
-  Version := '5.0.10';
-  ExtractTemporaryFile('Redis-x64-5.0.10.msi');
+  Version := '7.4.0';
+  ExtractTemporaryFile('Redis-7.4.0-Windows-x64.msi');
   Dependency_Add(
-    'Redis-x64-5.0.10.msi',
+    'Redis-7.4.0-Windows-x64.msi',
     '/quiet',
     'Redis ' + Version + 'x64',
     '',
@@ -228,14 +228,14 @@ procedure Dependency_AddRedis;
 var
   Version: String;
 begin
-  Version := '5.0.10';
+  Version := '7.4.0';
   Dependency_Add(
     'redis.msi',
     '/quiet',
     'Redis ' + Version + 'x64',
     Dependency_String(
       '',
-      'https://download.onlyoffice.com/install/windows/redist/Redis-x64-5.0.10.msi'),
+      'https://github.com/ONLYOFFICE/redis-windows/releases/download/7.4.0/Redis-7.4.0-Windows-x64.msi'),
     '',
     False,
     False);
