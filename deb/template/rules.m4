@@ -9,7 +9,7 @@ export DH_VERBOSE=1
 override_dh_shlibdeps:
 
 override_dh_strip:
-	dh_strip -Xdocservice -Xconverter -Xmetrics -Xexample -Xjson -Xcore.node
+	dh_strip -Xdocservice -Xconverter -Xmetrics -Xadminpanel -Xexample -Xjson -Xcore.node
 
 execute_after_dh_fixperms:
 	chmod o-rwx debian/*-documentserver/etc/*/documentserver/*.json
