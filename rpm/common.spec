@@ -38,11 +38,6 @@ LOG_DIR=%{buildroot}%{_localstatedir}/log/%{_ds_prefix}
 mkdir -p "$HOME_DIR/"
 cp -r $DOCUMENTSERVER_HOME/* "$HOME_DIR/"
 
-#install documentserver libs
-mkdir -p "$LIB_DIR/"
-cp -r $DOCUMENTSERVER_HOME/server/FileConverter/bin/*.so* "$LIB_DIR/" 
-rm $HOME_DIR/server/FileConverter/bin/*.so*
-
 #install documentserver bin
 mkdir -p "$BIN_DIR/"
 cp -r $DOCUMENTSERVER_BIN/*.sh "$BIN_DIR/"
@@ -96,7 +91,7 @@ cp -r %{_builddir}/../../../common/documentserver/logrotate/*.conf "$DS_LOGROTAT
 mkdir -p "${HOME_DIR}-example/"
 cp -r $DOCUMENTSERVER_EXAMPLE_HOME/* "${HOME_DIR}-example/"
 
-#install dcoumentserver example configs
+#install documentserver example configs
 mkdir -p "${CONF_DIR}-example/"
 cp -r $DOCUMENTSERVER_EXAMPLE_CONFIG/* "${CONF_DIR}-example/" 
 
@@ -174,7 +169,7 @@ rm -rf "%{buildroot}"
 
 %config %attr(644, root, root) %{_sysconfdir}/%{_ds_prefix}/logrotate/*
 
-%attr(755, root, root) %{_libdir}/*.so*
+%attr(755, root, root) %{_localstatedir}/www/%{_ds_prefix}/server/FileConverter/bin/*.so*
 %attr(744, root, root) %{_bindir}/documentserver-*.sh
 %attr(-, root, root) %{_sysconfdir}/logrotate.d/*
 %attr(-, root, root) %{_sysconfdir}/nginx/%{nginx_conf_d}/*
@@ -221,7 +216,7 @@ exit 0
 %post
 DIR="/var/www/%{_ds_prefix}"
 # Make symlink to libcurl-gnutls
-ln -sf %{_libdir}/libcurl.so.4 %{_libdir}/libcurl-gnutls.so.4
+ln -sf %{_localstatedir}/www/%{_ds_prefix}/server/FileConverter/bin/libcurl.so.4 %{_localstatedir}/www/%{_ds_prefix}/server/FileConverter/bin/libcurl-gnutls.so.4
 
 #make exchange dir
 mkdir -pm 755 "%{_localstatedir}/www/%{_ds_prefix}/../Data" && chown ds:ds "$_"
